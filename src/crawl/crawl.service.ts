@@ -199,6 +199,12 @@ function convertRelativeTimeToDate(timeText: string): string {
         const hours = parseInt(timeText.replace('시간 전', '').trim(), 10);
         convertedDate = new Date(now.getTime() - hours * 60 * 60 * 1000);
     } 
+
+    // ⏰ 당일 시간 (ex: "11:09:57")
+    else if (timeText.match(/^\d{2}:\d{2}:\d{2}$/)) {
+        const [hours, minutes, seconds] = timeText.split(':').map(num => parseInt(num, 10));
+        convertedDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes, seconds);
+    }
     
     // 📅 날짜 형식 (ex: "02-24") - 같은 연도의 월-일 데이터 처리
     else if (timeText.match(/^\d{2}-\d{2}$/)) {
