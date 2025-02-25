@@ -5,14 +5,10 @@ import { CrawlService } from './crawl.service';
 export class CrawlController {
     constructor(private readonly crawlService: CrawlService) {}
 
-    @Get()
-    async getWebsite(@Query('url') encodedUrl : string) {
-        if (!encodedUrl) {
-            return { error : 'NOT URL'}
-        }
-
-        const url = decodeURIComponent(encodedUrl); // URL 디코딩
-        return this.crawlService.srcapWeb(url);
+    @Get('scrap')
+    async scrapAndSave() {
+        await this.crawlService.scrapAndSave();
+        return { message: '크롤링 후 데이터 저장 완료!' };
     }
 
     @Get('arca')
@@ -21,8 +17,28 @@ export class CrawlController {
             return { error : 'NOT URL'}
         }
 
-        const url = decodeURIComponent(encodedUrl); // URL 디코딩
+        const url = decodeURIComponent(encodedUrl); 
         return this.crawlService.scrapArcaDeal(url);
+    }
+
+    @Get('ppomppu')
+    async getPPomppuDeal(@Query('url') encodedUrl : string) {
+        if (!encodedUrl) {
+            return { error : 'NOT URL'}
+        }
+
+        const url = decodeURIComponent(encodedUrl); 
+        return this.crawlService.scrapPPomppuDeal(url);
+    }
+
+    @Get('quasar')
+    async getQuasarDeal(@Query('url') encodedUrl : string) {
+        if (!encodedUrl) {
+            return { error : 'NOT URL'}
+        }
+
+        const url = decodeURIComponent(encodedUrl); 
+        return this.crawlService.scrapQuasarDeal(url);
     }
 
 }

@@ -1,4 +1,4 @@
-export class HotDealPost {
+export class HotDealPPost {
     title: string;
     link: string;
     time: string;
