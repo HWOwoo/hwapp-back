@@ -232,7 +232,7 @@ function convertRelativeTimeToDate(timeText: string): string {
     // 📅 날짜 형식 추가 (ex: "25.02.26 13:56:09" → "2025-02-26 13:56:09")
     else if (timeText.match(/^\d{2}\.\d{2}\.\d{2} \d{2}:\d{2}:\d{2}$/)) {
         const [datePart, timePart] = timeText.split(' '); // 날짜와 시간 분리
-        const [day, month, year] = datePart.split('.').map(num => parseInt(num, 10)); // 일, 월, 년 분리
+        const [year, month, day] = datePart.split('.').map(num => parseInt(num, 10)); // 일, 월, 년 분리
         const fullYear = 2000 + year; // 2자리 연도를 4자리로 변환 (ex: 25 → 2025) 
     
         // ✅ new Date(year, month - 1, day) 사용 (월은 0부터 시작)
@@ -240,9 +240,7 @@ function convertRelativeTimeToDate(timeText: string): string {
     
         const [hours, minutes, seconds] = timePart.split(':').map(num => parseInt(num, 10));
         convertedDate.setHours(hours, minutes, seconds);
-    
-        // ✅ 변환된 값 "YYYY-MM-DD HH:mm:ss" 형식으로 반환
-        return convertedDate.toISOString().replace("T", " ").split(".")[0];
+        convertedDate.setHours(convertedDate.getHours() - convertedDate.getTimezoneOffset() / 60);
     }
 
 
