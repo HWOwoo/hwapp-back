@@ -1,9 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import puppeteer from 'puppeteer-extra';
-import { CrawlPost } from './model/crawl.model';
-import { HotDealPost } from './model/crawl.arca.hotdeal.model';
-import { HotDealPPost } from './model/crawl.ppomppu.hotdeal.model copy';
-import { HotDealQPost } from './model/crawl.quasar.hotdeal.model';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HotDeal } from './model/entity/crawl.deal.entity';
 import { Repository } from 'typeorm';
