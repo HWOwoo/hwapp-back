@@ -1,9 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, PrimaryColumn } from 'typeorm';
 
 @Entity('hot_deals')
 export class HotDeal {
-    
-    @PrimaryGeneratedColumn()
+    @Column()
     id : number;
 
     @Column()
@@ -11,8 +10,8 @@ export class HotDeal {
 
     @Column()
     title : string;
-
-    @Column()
+    
+    @PrimaryColumn()
     link : string;
 
     @Column()

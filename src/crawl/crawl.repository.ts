@@ -1,16 +1,12 @@
 import { Repository } from "typeorm";
 import { HotDeal } from "./model/entity/crawl.deal.entity";
-import { ConflictException, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class CrawlRepository extends Repository<HotDeal> {
     async saveDeal(deal : HotDeal) : Promise<void> {
         try {
-            // upsert : insert, 중복값은 제외
-            await this.upsert(deal, {
-                conflictPaths: [ "link" ],
-                skipUpdateIfNoValuesChanged: true
-            });
+            await this.save(deal);
             console.log('✅ 저장 완료 : ${deal.title}')
         } catch (error) {
             if ( error.code === '23505') {

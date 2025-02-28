@@ -84,7 +84,7 @@ export class CrawlService {
                         price: priceElement?.textContent?.trim() ?? 'No Price',
                         site: 'Arca'
                     };
-                });
+                }).filter(deal => deal.title !== 'No Title');
             });
             
 
@@ -186,7 +186,7 @@ export class CrawlService {
                     site: 'Quasar',
                     createAt: timeElement?.textContent?.trim() ?? 'No Time'
                 };
-            });
+            }).filter(deal => deal.title !== 'No Title');
         });
         
 
