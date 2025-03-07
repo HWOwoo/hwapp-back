@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { HotDeal } from './crawl/model/entity/crawl.deal.entity';
 import { BoardService } from './board/board.service';
 import { BoardController } from './board/board.controller';
+import { BoardModule } from './board/board.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { BoardController } from './board/board.controller';
       synchronize: true, // 애플리케이션 시작 시 자동으로 테이블 생성 (개발 환경에서만 true)
       logging: true, // SQL 실행 로그 확인
     }),
+    BoardModule,
   ],
   controllers: [AppController, BoardController],
   providers: [AppService, BoardService],
