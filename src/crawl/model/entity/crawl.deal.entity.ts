@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, PrimaryColumn
 
 @Entity('hot_deals')
 export class HotDeal {
-    @Column()
+    @Column({ type: 'int', generated: 'increment' }) // 자동증가 ( pk아님 )
     id : number;
 
     @Column()

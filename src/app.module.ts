@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { CrawlModule } from './crawl/crawl.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HotDeal } from './crawl/model/entity/crawl.deal.entity';
+import { BoardService } from './board/board.service';
+import { BoardController } from './board/board.controller';
 
 @Module({
   imports: [
@@ -20,8 +22,8 @@ import { HotDeal } from './crawl/model/entity/crawl.deal.entity';
       logging: true, // SQL 실행 로그 확인
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, BoardController],
+  providers: [AppService, BoardService],
   
 })
 export class AppModule {}
