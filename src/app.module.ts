@@ -24,8 +24,8 @@ import { BoardModule } from './board/board.module';
     }),
     BoardModule,
   ],
-  controllers: [AppController, BoardController],
-  providers: [AppService, BoardService],
+  controllers: [AppController],
+  providers: [AppService],
   
 })
 export class AppModule {}
