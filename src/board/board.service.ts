@@ -11,12 +11,15 @@ export class BoardService {
     ) {}
 
     // 전체 목록 조회
-    async getAllDeal(limit: number, page: number = 1): Promise<HotDeal[]> {
-        // limit, page가 유효한 숫자인지 확인
-        const take = Number(limit) || 10; // 기본값 10 설정 (limit가 NaN이면 10)
-        const skip = Number(page) > 1 ? take * (Number(page) - 1) : 0; // page가 1보다 작으면 0으로 설정
+    async getAllDeal(limit: number, page: number = 1, site?: string): Promise<HotDeal[]> {
+        const take = Number(limit) || 10;
+        const skip = Number(page) > 1 ? take * (Number(page) - 1) : 0;
+        
+        // '통합'이면 site 필터링을 적용하지 않음
+        const whereCondition = site && site !== '통합' ? { site } : {};
     
         return await this.boardRepositiory.find({
+            where: whereCondition,
             take,
             skip,
             order: {
@@ -25,5 +28,11 @@ export class BoardService {
         });
     }
     
+    async getAllDealCount(site?: string): Promise<number> {
+        
+        const whereCondition = site && site !== '통합' ? { site } : {};
+        return await this.boardRepositiory.count({ where: whereCondition });
+        
+    }
 
 }
