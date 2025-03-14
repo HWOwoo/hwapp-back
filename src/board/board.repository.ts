@@ -2,9 +2,14 @@ import { Repository } from 'typeorm';
 import { HotDeal } from 'src/crawl/model/entity/crawl.deal.entity';
 import { Injectable } from '@nestjs/common';
 import { DataSource } from 'typeorm';
+import { BoardDeals } from './entity/board.model.entity';
 
 @Injectable()
 export class BoardRepository extends Repository<HotDeal> {
+    constructor(private readonly dataSource: DataSource) {
+        super(BoardDeals, dataSource.createEntityManager());
+    }
+
     async readDeal(limit: number, page: number = 1): Promise<HotDeal[]> {
         return await this.find({
             take: limit,
@@ -13,5 +18,10 @@ export class BoardRepository extends Repository<HotDeal> {
                 createAt: 'DESC',
             },
         });
+    }
+
+    async createBoard(deal : BoardDeals) : Promise<void> {
+        await this.save(deal);
+        console.log('✅: ${deal.title}')
     }
 }

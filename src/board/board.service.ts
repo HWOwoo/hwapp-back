@@ -1,14 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HotDeal } from 'src/crawl/model/entity/crawl.deal.entity';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
+import { BoardDeals } from './entity/board.model.entity';
+import { BoardRepository } from './board.repository';
+import { CreateBoardDto } from './entity/dto/create-board.dto.ts';
 
 @Injectable()
 export class BoardService {
     constructor(
         @InjectRepository(HotDeal)
         private readonly boardRepositiory: Repository<HotDeal>,
+        @InjectRepository(BoardDeals)
+        private readonly boardARepositiory: BoardRepository
     ) {}
+    
 
     // 전체 목록 조회
     async getAllDeal(limit: number, page: number = 1, site?: string): Promise<HotDeal[]> {
@@ -19,7 +25,9 @@ export class BoardService {
         const whereCondition = site && site !== '통합' ? { site } : {};
     
         return await this.boardRepositiory.find({
-            where: whereCondition,
+            where: { ...whereCondition,
+                title: Not('No Data Found'), // "No Data Found" 제외
+             },
             take,
             skip,
             order: {
@@ -28,11 +36,41 @@ export class BoardService {
         });
     }
     
+    // 전체 리스트 조회
     async getAllDealCount(site?: string): Promise<number> {
         
         const whereCondition = site && site !== '통합' ? { site } : {};
         return await this.boardRepositiory.count({ where: whereCondition });
         
     }
+    
+    // 게시글 생성
+    async createDeal(deal: CreateBoardDto): Promise<void> {
+        try {
+            const board = new BoardDeals();
+            board.creater = deal.creater;
+            board.title = deal.title;
+            board.link = deal.link;
+            board.price = deal.price;
+            board.createAt =  getCurrentFormattedDate();
 
+            await this.boardARepositiory.createBoard(board);
+            console.log(`✅: ${deal.title}`);
+        } catch (error) {
+        }
+    }
+
+}
+
+function getCurrentFormattedDate(): string {
+    const now = new Date();
+
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }

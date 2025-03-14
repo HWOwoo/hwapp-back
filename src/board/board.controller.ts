@@ -1,5 +1,6 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { BoardService } from './board.service';
+import { BoardDeals } from './entity/board.model.entity';
 
 @Controller('board')
 export class BoardController {
@@ -24,6 +25,11 @@ export class BoardController {
     ) {
         const count = await this.boardService.getAllDealCount(site);
         return { count };
+    }
+
+    @Post('create')
+    async createDeal(@Body() BoardDeals) {
+        return this.boardService.createDeal(BoardDeals);
     }
 
 }
