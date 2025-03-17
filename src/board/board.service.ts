@@ -1,18 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HotDeal } from 'src/crawl/model/entity/crawl.deal.entity';
 import { Not, Repository } from 'typeorm';
 import { BoardDeals } from './entity/board.model.entity';
 import { BoardRepository } from './board.repository';
 import { CreateBoardDto } from './entity/dto/create-board.dto.ts';
-
+import { BoardApartRepository } from './board.apart.repository';
 @Injectable()
 export class BoardService {
     constructor(
         @InjectRepository(HotDeal)
         private readonly boardRepositiory: Repository<HotDeal>,
-        @InjectRepository(BoardDeals)
-        private readonly boardARepositiory: BoardRepository
+        @Inject(BoardApartRepository)
+        private readonly boardARepositiory: BoardApartRepository
     ) {}
     
 
@@ -46,31 +46,28 @@ export class BoardService {
     
     // 게시글 생성
     async createDeal(deal: CreateBoardDto): Promise<void> {
+        const now = new Date();
+
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+
         try {
             const board = new BoardDeals();
+            board.id = 0;
             board.creater = deal.creater;
             board.title = deal.title;
             board.link = deal.link;
             board.price = deal.price;
-            board.createAt =  getCurrentFormattedDate();
+            board.createAt =  `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 
-            await this.boardARepositiory.createBoard(board);
-            console.log(`✅: ${deal.title}`);
+            this.boardARepositiory.createBoardlist(board);
+            console.log(`${deal.title}`);
         } catch (error) {
         }
     }
 
-}
-
-function getCurrentFormattedDate(): string {
-    const now = new Date();
-
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
-    const day = String(now.getDate()).padStart(2, '0');
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const seconds = String(now.getSeconds()).padStart(2, '0');
-
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }

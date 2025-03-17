@@ -11,7 +11,7 @@ export class CrawlService {
     ) {}
 
     async scrapAndSave() {
-        console.log('🔄 [크롤링 시작] 데이터 가져오는 중...');
+        console.log('[크롤링 시작] 데이터 가져오는 중...');
 
         // 크롤링 실행
         const arcaDeals = await this.scrapArcaDeal(decodeURIComponent('https://arca.live/b/hotdeal'));
@@ -23,9 +23,9 @@ export class CrawlService {
 
         if (allDeals.length > 0) {
             await this.saveDeals(allDeals);
-            console.log('✅ [크롤링 완료] 데이터가 성공적으로 저장되었습니다!');
+            console.log('[크롤링 완료] 데이터가 성공적으로 저장되었습니다!');
         } else {
-            console.warn('⚠️ [크롤링 결과] 저장할 데이터가 없습니다.');
+            console.warn('[크롤링 결과] 저장할 데이터가 없습니다.');
         }
     }
     
@@ -35,9 +35,9 @@ export class CrawlService {
                 await this.crawlRepository.save(deal);
             } catch (error) {
                 if (error.code === '23505') {
-                    console.warn(`⚠️ 중복된 데이터: ${deal.title}`);
+                    console.warn(`중복된 데이터: ${deal.title}`);
                 } else {
-                    console.error('❌ DB 저장 오류:', error);
+                    console.error('DB 저장 오류:', error);
                 }
             }
         }

@@ -20,7 +20,7 @@ export class BoardRepository extends Repository<HotDeal> {
         });
     }
 
-    async createBoard(deal : BoardDeals) : Promise<void> {
+    async createBoard(deal : BoardDeals) {
         await this.save(deal);
         console.log('✅: ${deal.title}')
     }

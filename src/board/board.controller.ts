@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { BoardService } from './board.service';
 import { BoardDeals } from './entity/board.model.entity';
+import { BoardApartRepository } from './board.apart.repository';
 
 @Controller('board')
 export class BoardController {
