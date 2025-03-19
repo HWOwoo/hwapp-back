@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
 import { HotDeal } from 'src/crawl/model/entity/crawl.deal.entity';
 import { Not, Repository } from 'typeorm';
 import { BoardDeals } from './entity/board.model.entity';
@@ -9,8 +9,8 @@ import { BoardApartRepository } from './board.apart.repository';
 @Injectable()
 export class BoardService {
     constructor(
-        @InjectRepository(HotDeal)
-        private readonly boardRepositiory: Repository<HotDeal>,
+        @Inject(BoardRepository)
+        private readonly boardRepositiory: BoardRepository,
         @Inject(BoardApartRepository)
         private readonly boardARepositiory: BoardApartRepository
     ) {}
@@ -43,6 +43,10 @@ export class BoardService {
         return await this.boardRepositiory.count({ where: whereCondition });
         
     }
+
+    async readAiContent(link: string) {
+        return await this.boardRepositiory.readAiContent(link);
+    }
     
     // 게시글 생성
     async createDeal(deal: CreateBoardDto): Promise<void> {
@@ -69,5 +73,16 @@ export class BoardService {
         } catch (error) {
         }
     }
+
+    async updateAiContent(link: string, aiContent: string) : Promise<void> {
+        const deal = await this.boardRepositiory.findOne({where: {link}});
+
+        if (!deal) {
+            throw new Error(`에러`)
+        }
+
+        await this.boardRepositiory.updateContent(link, aiContent);
+    }
+
 
 }

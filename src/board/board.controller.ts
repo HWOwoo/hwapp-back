@@ -2,6 +2,7 @@ import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { BoardService } from './board.service';
 import { BoardDeals } from './entity/board.model.entity';
 import { BoardApartRepository } from './board.apart.repository';
+import { link } from 'fs';
 
 @Controller('board')
 export class BoardController {
@@ -33,4 +34,18 @@ export class BoardController {
         return this.boardService.createDeal(BoardDeals);
     }
 
+    @Post('updateAi')
+    async updateDealContent(
+        @Body('link') link : string,
+        @Body('aiContent') aiContent : string
+    ) {
+        await this.boardService.updateAiContent(link, aiContent);
+    }
+
+    @Post('readAiContent')
+    async readAiContent(
+        @Body('link') link : string
+    ) {
+        return await this.boardService.readAiContent(link);
+    }
 }

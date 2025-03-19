@@ -7,7 +7,7 @@ import { BoardDeals } from './entity/board.model.entity';
 @Injectable()
 export class BoardRepository extends Repository<HotDeal> {
     constructor(private readonly dataSource: DataSource) {
-        super(BoardDeals, dataSource.createEntityManager());
+        super(HotDeal, dataSource.createEntityManager());
     }
 
     async readDeal(limit: number, page: number = 1): Promise<HotDeal[]> {
@@ -20,8 +20,20 @@ export class BoardRepository extends Repository<HotDeal> {
         });
     }
 
+    async readAiContent(link : string) {
+        return await this.findOne({
+            where : {link},
+            select : ["aiContent"],
+        });
+    }
+
+    async updateContent(link: string, aiContent: string) {
+        await this.update({link}, {aiContent});
+        console.log(': ${aiContent}')
+    }
+
     async createBoard(deal : BoardDeals) {
         await this.save(deal);
-        console.log('✅: ${deal.title}')
+        console.log(': ${deal.title}')
     }
 }

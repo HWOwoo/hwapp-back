@@ -19,4 +19,7 @@ export class HotDeal {
 
     @Column()
     createAt: string;
+
+    @Column()
+    aiContent : string;
 }

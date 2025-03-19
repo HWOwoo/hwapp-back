@@ -68,7 +68,7 @@ export class CrawlService {
                 const rows = document.querySelectorAll('.vrow.hybrid');
 
                 if (rows.length === 0) {
-                    return [{ id: 0 ,site: 'Arca', title: 'No Data Found', link: '#', price: 'No Price', createAt: '-' }];
+                    return [{ id: 0 ,site: 'Arca', title: 'No Data Found', link: '#', price: 'No Price', createAt: '-', aiContent: '' }];
                 }
             
                 return Array.from(rows).map(row => {
@@ -82,7 +82,8 @@ export class CrawlService {
                         link: titleElement?.getAttribute('href') ? baseURL + titleElement.getAttribute('href') : '#',
                         createAt: timeElement?.getAttribute('datetime') || 'No Time',
                         price: priceElement?.textContent?.trim() ?? 'No Price',
-                        site: 'Arca'
+                        site: 'Arca',
+                        aiContent : ''
                     };
                 }).filter(deal => deal.title !== 'No Title');
             });
@@ -112,7 +113,7 @@ export class CrawlService {
                 const rows = document.querySelectorAll('tr.baseList');
 
                 if (rows.length === 0) {
-                    return [{ id: 0, title: 'No Data Found', link: '#', createAt: 'No Time', price: 'No Price', site: 'PPomppu' }];
+                    return [{ id: 0, title: 'No Data Found', link: '#', createAt: 'No Time', price: 'No Price', site: 'PPomppu', aiContent: '' }];
                 }
             
                 return Array.from(rows).map(row => {
@@ -139,7 +140,8 @@ export class CrawlService {
                         link: linkElement?.getAttribute('href') ? baseURL + linkElement.getAttribute('href') : '#',
                         createAt: rawTime,
                         price: price,
-                        site: 'PPomppu'
+                        site: 'PPomppu',
+                        aiContent: ''
                     };
                 }).filter(deal => deal !== null);
             });
@@ -169,7 +171,7 @@ export class CrawlService {
             const rows = document.querySelectorAll('.market-info-type-list tbody tr'); // 모든 핫딜 행 가져오기
         
             if (rows.length === 0) {
-                return [{ id : 0, title: 'No Data Found', link: '#', createAt: 'No Time', price: 'No Price', site: 'Quasar' }];
+                return [{ id : 0, title: 'No Data Found', link: '#', createAt: 'No Time', price: 'No Price', site: 'Quasar', aiContent: '' }];
             }
 
             return Array.from(rows).map(row => {
@@ -184,7 +186,8 @@ export class CrawlService {
                     link: linkElement?.getAttribute('href') ? baseURL + linkElement.getAttribute('href') : '#',
                     price: priceElement?.textContent?.trim() ?? 'No Price',
                     site: 'Quasar',
-                    createAt: timeElement?.textContent?.trim() ?? 'No Time'
+                    createAt: timeElement?.textContent?.trim() ?? 'No Time',
+                    aiContent: ''
                 };
             }).filter(deal => deal.title !== 'No Title');
         });
