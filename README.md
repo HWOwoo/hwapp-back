@@ -37,7 +37,7 @@
 - **DB 연동**: TypeORM + PostgreSQL
 - **크롤링**: Puppeteer
 - **날짜 파싱**: JS Date 객체
-- **AI 분석**: OpenAI API 연동 (GPT 기반 상품 설명 생성)
+- **AI 분석**: Perplexity API 연동 (Perplexity 기반 상품 설명 생성)
 - **API 통신**: RESTful API
 
 ---
@@ -81,7 +81,7 @@ src/
 - 자동 시간 입력, AI 분석 결과 추가 가능
 
 ### ✅ AI 분석 기능
-- 상품명으로 OpenAI API 호출 → 설명 생성
+- 상품명으로 Perplexity API 호출 → 설명 생성
 - 생성된 aiContent를 해당 상품 DB에 저장
 
 ---
